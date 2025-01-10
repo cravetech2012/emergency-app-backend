@@ -10,7 +10,7 @@ dotenv.config();
 
 // Create MySQL connection using environment variables
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || "auth-db1155.hstgr.io:3307",  // Example with custom port
+  host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "u302038258_emergency",
   password: process.env.DB_PASSWORD || "IdontwannaClose123$",
   database: process.env.DB_NAME || "u302038258_emergency",
