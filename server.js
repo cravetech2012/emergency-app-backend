@@ -3,17 +3,15 @@ const mysql = require("mysql");
 const geolib = require("geolib");
 const dotenv = require("dotenv");
 const app = express();
-const port = process.env.PORT || 3000;
 
 // Load environment variables
 dotenv.config();
 
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || "auth-db1155.hstgr.io",
-  user: process.env.DB_USER || "u302038258_emergency",
-  password: process.env.DB_PASSWORD || "IdontwannaClose123$",
-  database: process.env.DB_NAME || "u302038258_emergency",
-  port: process.env.DB_PORT || 3306 // Use the actual port if it's different from 3306
+  host: process.env.DB_HOST || "sql209.thsite.top",
+  user: process.env.DB_USER || "thsi_38080502",
+  password: process.env.DB_PASSWORD || "o9!N!lYb",
+  database: process.env.DB_NAME || "thsi_38080502_emergency",
 });
 
 
