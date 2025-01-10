@@ -7,13 +7,15 @@ const app = express();
 // Load environment variables
 dotenv.config();
 
+// Define the port (use the PORT environment variable or default to 3000)
+const port = process.env.PORT || 3000;
+
 const db = mysql.createConnection({
   host: process.env.DB_HOST || "sql209.thsite.top",
   user: process.env.DB_USER || "thsi_38080502",
   password: process.env.DB_PASSWORD || "o9!N!lYb",
   database: process.env.DB_NAME || "thsi_38080502_emergency",
 });
-
 
 db.connect((err) => {
   if (err) {
