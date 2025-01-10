@@ -1,21 +1,25 @@
 const express = require("express");
 const mysql = require("mysql");
 const geolib = require("geolib");
+const dotenv = require("dotenv");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-// Create MySQL connection
+// Load environment variables
+dotenv.config();
+
+// Create MySQL connection using environment variables
 const db = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root", // Replace with your MySQL username
-  password: "", // Replace with your MySQL password
-  database: "emergencyadmin",
+  host: process.env.DB_HOST || "127.0.0.1",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "emergencyadmin",
 });
 
 db.connect((err) => {
   if (err) {
     console.error("Error connecting to MySQL:", err);
-    return;
+    process.exit(1); // Exit the app if the connection fails
   }
   console.log("Connected to MySQL");
 });
@@ -85,7 +89,30 @@ app.get("/firestations", (req, res) => {
   fetchLocationsByType(req, res, "FireStation");
 });
 
-// Start server
-app.listen(port, () => {
+// Start server with graceful shutdown
+const server = app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
+});
+
+// Graceful shutdown
+process.on("SIGTERM", () => {
+  console.log("SIGTERM signal received. Closing HTTP server.");
+  server.close(() => {
+    console.log("HTTP server closed.");
+    db.end(() => {
+      console.log("MySQL connection closed.");
+      process.exit(0);
+    });
+  });
+});
+
+process.on("SIGINT", () => {
+  console.log("SIGINT signal received. Closing HTTP server.");
+  server.close(() => {
+    console.log("HTTP server closed.");
+    db.end(() => {
+      console.log("MySQL connection closed.");
+      process.exit(0);
+    });
+  });
 });
